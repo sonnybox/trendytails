@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* could be any from above, look at documentation for more information */
+/* @layer utilities  {
+    .my-custom-style {
+        text-wrap: balance;
+    }
+} */
+
+button,
+input,
+select,
+td,
+th,
+a {
+    border: 1px solid black;
+    text-align: left;
+    padding: 4px;
+    margin: 8px;
+    font-family: var(--figtree), var(--icon), sans-serif;
+}
+
+main {
+    padding: 16px;
+}
