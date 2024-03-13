@@ -3,25 +3,230 @@
 @tailwind utilities;
 
 /* could be any from above, look at documentation for more information */
-/* @layer utilities  {
-    .my-custom-style {
+@layer utilities {
+    .text-balance {
         text-wrap: balance;
     }
-} */
+}
 
-button,
-input,
-select,
-td,
-th,
-a {
-    border: 1px solid black;
-    text-align: left;
-    padding: 4px;
-    margin: 8px;
+/* Global Font */
+* {
     font-family: var(--figtree), var(--icon), sans-serif;
 }
 
+:root {
+    --gruvbox-yellow-dark: #d79921;
+    --gruvbox-yellow-light: #fabd2f;
+    --gruvbox-green-dark: #98971a;
+    --gruvbox-green-light: #b8bb26;
+    --gruvbox-blue-dark: #458588;
+    --gruvbox-blue-light: #83a598;
+    --gruvbox-purple-dark: #b16286;
+    --gruvbox-purple-light: #d3869b;
+    --gruvbox-aqua-dark: #689d6a;
+    --gruvbox-aqua-light: #8ec07c;
+    --gruvbox-red-dark: #cc241d;
+    --gruvbox-red-light: #fb4934;
+    --gruvbox-gray-dark: #928374;
+    --gruvbox-gray-light: #a89984;
+    --gruvbox-bg: #1d2021;
+    --gruvbox-bg0: #282828;
+    --gruvbox-bg1: #3c3836;
+    --gruvbox-bg2: #504945;
+    --gruvbox-bg3: #665c54;
+    --gruvbox-bg4: #7c6f64;
+    --gruvbox-fg: #ebdbb2;
+    --gruvbox-fg0: #fbf1c7;
+    --gruvbox-fg1: #ebdbb2;
+    --gruvbox-fg2: #d5c4a1;
+    --gruvbox-fg3: #bdae93;
+    --gruvbox-fg4: #a89984;
+    --radius: 0.7rem;
+    --padding: 0.4rem;
+}
+
+body {
+    background-color: var(--gruvbox-bg);
+}
+
 main {
-    padding: 16px;
+    color: var(--gruvbox-fg0);
+    font-weight: 300;
+    max-width: 960px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    @apply mt-2;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+}
+
+tr {
+    @apply transition-all;
+}
+
+table {
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    border-top: 1px solid var(--gruvbox-fg4);
+    border-radius: var(--radius);
+}
+
+input,
+td,
+th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+}
+
+td,
+th {
+    border: 1px solid var(--gruvbox-fg4);
+    border-top: none;
+    border-left: none;
+    padding: var(--padding);
+}
+
+th {
+    color: var(--gruvbox-fg);
+}
+
+tr:nth-child(even) {
+    background-color: var(--gruvbox-bg0);
+}
+
+tr:hover {
+    background-color: var(--gruvbox-bg1);
+}
+
+th {
+    background-color: var(--gruvbox-bg1);
+}
+
+td:first-child,
+th:first-child {
+    border-left: 1px solid var(--gruvbox-fg4);
+}
+
+tr:first-of-type th:first-child {
+    border-top-left-radius: var(--radius);
+}
+tr:first-of-type th:last-child {
+    border-top-right-radius: var(--radius);
+}
+tr:last-of-type td:first-child {
+    border-bottom-left-radius: var(--radius);
+}
+tr:last-of-type td:last-child {
+    border-bottom-right-radius: var(--radius);
+}
+
+input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+input.modify-cell {
+    @apply m-0 p-0;
+    border: none;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    background: none;
+}
+
+input.modify-cell:focus {
+    font-weight: bold;
+}
+
+tr.edit-rows {
+    font-weight: bold;
+}
+
+button,
+select,
+.search-input {
+    padding: var(--padding);
+    border-radius: var(--radius);
+    @apply transition-all;
+    height: 2.6rem;
+}
+
+select {
+    background-color: var(--gruvbox-bg0);
+    color: var(--gruvbox-fg);
+    border: 1px solid var(--gruvbox-bg4);
+    outline: none;
+}
+
+input.search-input {
+    background-color: var(--gruvbox-bg1);
+    color: var(--gruvbox-bg0);
+    border: 1px solid var(--gruvbox-fg4);
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: var(--gruvbox-fg4);
+    font-weight: normal;
+}
+
+.search-input:focus {
+    background-color: var(--gruvbox-fg);
+}
+
+.add-button {
+    background-color: var(--gruvbox-blue-dark);
+}
+
+.add-button:hover {
+    background-color: var(--gruvbox-blue-light);
+}
+
+.edit-button {
+    background-color: var(--gruvbox-yellow-dark);
+}
+
+.edit-button:hover {
+    background-color: var(--gruvbox-yellow-light);
+}
+
+.cancel-button {
+    background-color: var(--gruvbox-red-dark);
+}
+
+.cancel-button:hover {
+    background-color: var(--gruvbox-red-light);
+}
+
+.confirm-button {
+    background-color: var(--gruvbox-aqua-dark);
+}
+
+.confirm-button:hover {
+    background-color: var(--gruvbox-aqua-light);
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--gruvbox-fg0);
+}
+
+.left {
+    background-color: #98971a;
+    width: 100px;
 }

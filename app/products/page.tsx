@@ -1,36 +1,26 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import {
-    handleIdChange,
-    handleSearchChange,
-    handleSelectChange,
-    handleEditChange,
-    handleInputChange,
-    cancelEdit,
-} from '../_lib/events-handlers';
-import {
-    fetchDataToTable,
-    searchDataToTable,
-    deleteEntityById,
-    toggleEdit,
-    sendNewEntity,
-} from '../_lib/query-helpers';
+import { useState, useEffect } from 'react';
+import { fetchDataToTable, searchDataToTable } from '../_lib/query-helpers';
+import ExistingTable from '../_components/existing-table';
+import NewTable from '../_components/new-table';
+import RemoveId from '../_components/remove-id';
+import SearchTable from '../_components/search-table';
 
 export default function Products() {
     const tableName = 'Products';
     const tableDescription = 'Represents products available for ordering.';
-    const deleteIdName = 'productID';
+    const idName = 'productID';
     const selectAllQuery = `select * from ${tableName}`;
     const defaultSearchType = 'productName';
 
     interface Entity {
-        productID: number;
+        productID: string;
         productName: string;
         productBreedSuitability: string;
         productColor: string;
         productSize: string;
-        productStockQuantity: number;
+        productStockQuantity: string;
         productDescription: string;
     }
 
@@ -42,23 +32,23 @@ export default function Products() {
     const tableHeaders: Table[] = [
         { label: 'ID', key: 'productID' },
         { label: 'Name', key: 'productName' },
-        { label: 'Suitable', key: 'productBreedSuitability' },
+        { label: 'Suitable For', key: 'productBreedSuitability' },
         { label: 'Color', key: 'productColor' },
         { label: 'Size', key: 'productSize' },
         { label: 'Stock', key: 'productStockQuantity' },
-        { label: 'Desc.', key: 'productDescription' },
+        { label: 'Description', key: 'productDescription' },
     ];
 
     type EntityNoID = Omit<Entity, 'productID'>;
 
     const searchDefaultPlaceholder = [
         {
-            productID: -1,
+            productID: '',
             productName: '',
             productBreedSuitability: '',
             productColor: '',
             productSize: '',
-            productStockQuantity: -2,
+            productStockQuantity: '',
             productDescription: '',
         },
     ];
@@ -77,7 +67,7 @@ export default function Products() {
     const [searchType, setSearchType] = useState(defaultSearchType);
     const [editMode, setEditMode] = useState(false);
     const [searchString, setSearchString] = useState('');
-    const [deleteThisId, setDeleteThisId] = useState<number>(-1);
+    const [deleteThisId, setDeleteThisId] = useState<string>('');
 
     useEffect(() => {
         fetchDataToTable(selectAllQuery, defaultTable, setDefaultTable);
@@ -103,224 +93,46 @@ export default function Products() {
             <h1>{tableName}</h1>
             <h2>Purpose</h2>
             <p>{tableDescription}</p>
-            <h2>Existing {tableName}</h2>
-            <table>
-                <thead>
-                    <tr>
-                        {tableHeaders.map((header) => (
-                            <th key={header.key}>{header.label}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {!editMode
-                        ? defaultTable.map((entity, index) => (
-                              <tr key={index}>
-                                  {Object.keys(entity).map((key) => (
-                                      <td key={key}>
-                                          {entity[key as keyof Entity]}
-                                      </td>
-                                  ))}
-                              </tr>
-                          ))
-                        : editTable.map((entity, index) => (
-                              <tr key={index}>
-                                  {Object.keys(entity).map((key) => (
-                                      <td key={key}>
-                                          {key === deleteIdName ? (
-                                              <>
-                                                  {
-                                                      entity[
-                                                          key as keyof Entity
-                                                      ] as string
-                                                  }
-                                              </>
-                                          ) : (
-                                              <input
-                                                  placeholder={
-                                                      entity[
-                                                          key as keyof Entity
-                                                      ] as string
-                                                  }
-                                                  type="text"
-                                                  onChange={(e) =>
-                                                      handleEditChange(
-                                                          index,
-                                                          key,
-                                                          e.target.value,
-                                                          editTable,
-                                                          setEditTable
-                                                      )
-                                                  }
-                                              />
-                                          )}
-                                      </td>
-                                  ))}
-                              </tr>
-                          ))}
-                </tbody>
-            </table>
-            <button
-                id="edit"
-                onClick={() =>
-                    toggleEdit(
-                        editTable,
-                        defaultTable,
-                        editMode,
-                        tableName,
-                        deleteIdName,
-                        selectAllQuery,
-                        setDefaultTable,
-                        setEditTable,
-                        setEditMode
-                    )
-                }
-            >
-                {!editMode ? 'Edit' : 'Save'}
-            </button>
-            {editMode ? (
-                <button
-                    id="cancel"
-                    onClick={() => cancelEdit(setEditTable, setEditMode)}
-                >
-                    Cancel
-                </button>
-            ) : (
-                <></>
-            )}
-
-            <h2>Add New {tableName}</h2>
-            <table>
-                <thead>
-                    <tr>
-                        {tableHeaders.map((header) =>
-                            header.key == deleteIdName ? (
-                                ''
-                            ) : (
-                                <th key={header.key}>{header.label}</th>
-                            )
-                        )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {addNewEntity.map((entity, index) => (
-                        <tr key={index}>
-                            {Object.keys(entity).map((key) => (
-                                <td key={key}>
-                                    <input
-                                        type="text"
-                                        name={key as keyof EntityNoID}
-                                        value={entity[key as keyof EntityNoID]}
-                                        placeholder={
-                                            index == 0 ? 'click to type...' : ''
-                                        }
-                                        onChange={(event) =>
-                                            handleInputChange(
-                                                event,
-                                                index,
-                                                0,
-                                                addNewEntity,
-                                                setNewEntity
-                                            )
-                                        }
-                                    />
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            <button
-                id="add"
-                onClick={() =>
-                    sendNewEntity(
-                        addNewEntity,
-                        tableName,
-                        selectAllQuery,
-                        defaultTable,
-                        setDefaultTable,
-                        setNewEntity,
-                        addNewPlaceholder
-                    )
-                }
-            >
-                Add
-            </button>
-
-            <h2>Live Search</h2>
-            <select
-                name="searchType"
-                id="select"
-                value={searchType}
-                onChange={(event) => handleSelectChange(event, setSearchType)}
-            >
-                {tableHeaders.map((header) =>
-                    header.key == deleteIdName ? (
-                        ''
-                    ) : (
-                        <option key={header.key} value={header.key}>
-                            {header.label}
-                        </option>
-                    )
-                )}
-            </select>
-            <input
-                placeholder="type anything..."
-                id="input"
-                onChange={(event) => handleSearchChange(event, setSearchString)}
+            <ExistingTable
+                tableName={tableName}
+                tableHeaders={tableHeaders}
+                editMode={editMode}
+                defaultTable={defaultTable}
+                editTable={editTable}
+                idName={idName}
+                setEditTable={setEditTable}
+                selectAllQuery={selectAllQuery}
+                setDefaultTable={setDefaultTable}
+                setEditMode={setEditMode}
             />
-            <table>
-                <thead>
-                    <tr>
-                        {tableHeaders.map((header) => (
-                            <th key={header.key}>{header.label}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {searchTable.map((entity, index) => (
-                        <tr key={index}>
-                            {Object.keys(entity).map((key) => (
-                                <td key={key}>
-                                    {entity[key as keyof Entity] === -1
-                                        ? '󰍉'
-                                        : entity[key as keyof Entity] === -2
-                                        ? ''
-                                        : entity[key as keyof Entity]}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            <h2>Remove By ID</h2>
-            <input
-                type="number"
-                name="id"
-                onChange={(event) => handleIdChange(event, setDeleteThisId)}
-                value={deleteThisId <= -1 ? '' : deleteThisId}
+            <NewTable
+                tableName={tableName}
+                tableHeaders={tableHeaders}
+                defaultTable={defaultTable}
+                idName={idName}
+                setDefaultTable={setDefaultTable}
+                selectAllQuery={selectAllQuery}
+                addNewEntity={addNewEntity}
+                setNewEntity={setNewEntity}
+                addNewPlaceholder={addNewPlaceholder}
             />
-            <button
-                id="confirm"
-                onClick={() => {
-                    deleteEntityById(
-                        deleteIdName,
-                        tableName,
-                        deleteThisId,
-                        setDeleteThisId
-                    );
-                    fetchDataToTable(
-                        selectAllQuery,
-                        defaultTable,
-                        setDefaultTable,
-                        true
-                    );
-                }}
-            >
-                Confirm
-            </button>
+            <SearchTable
+                searchType={searchType}
+                tableHeaders={tableHeaders}
+                idName={idName}
+                searchTable={searchTable}
+                setSearchType={setSearchType}
+                setSearchString={setSearchString}
+            />
+            <RemoveId
+                idName={idName}
+                deleteThisId={deleteThisId}
+                setDeleteThisId={setDeleteThisId}
+                tableName={tableName}
+                selectAllQuery={selectAllQuery}
+                defaultTable={defaultTable}
+                setDefaultTable={setDefaultTable}
+            />
         </main>
     );
 }

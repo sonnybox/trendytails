@@ -1,17 +1,14 @@
-export default function formatDate(inputDate: string) {
-    if (inputDate) {
-        // Create a new Date object from the input string
-        const date = new Date(inputDate);
+export default function formatDate(value: string): string {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
-        // Extract year, month, and day from the date object
+    if (dateRegex.test(value)) {
+        const date = new Date(value);
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
         const year = date.getFullYear();
-        // Add 1 to month since getMonth() returns zero-based index
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
 
-        // Return formatted date
         return `${month}/${day}/${year}`;
-    } else {
-        return '';
     }
+
+    return value;
 }

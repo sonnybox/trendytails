@@ -1,12 +1,14 @@
-export default function getInputType(string: string) {
-    switch (string) {
-        case 'customerCardInfo':
-            return 'number';
+export default function getInputType(
+    string: string
+): 'number' | 'date' | 'text' {
+    const containsDate = /date/i.test(string);
+    const containsNumber = /id|card|zip|amount|stock|quantity/i.test(string);
 
-        case 'customerStartDate':
-            return 'date';
-
-        default:
-            return 'text';
+    if (containsDate) {
+        return 'date';
+    } else if (containsNumber) {
+        return 'number';
+    } else {
+        return 'text';
     }
 }

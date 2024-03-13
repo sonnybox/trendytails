@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Figtree } from 'next/font/google';
-import Navigation from './_components/navigation/page';
+import Navigation from '@/app/_components/navigation';
 import localFont from 'next/font/local';
-import './globals.css';
+import '@/app/globals.css';
 
 const icons = localFont({
     src: '../public/fonts/symbols-mono.ttf',
@@ -23,9 +23,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body
-                className={`${font.className} ${font.variable} ${icons.variable}`}
-            >
+            <body className={`${font.variable} ${icons.variable}`}>
                 <Navigation />
                 {children}
             </body>

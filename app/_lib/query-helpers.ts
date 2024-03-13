@@ -1,3 +1,5 @@
+import { convertDateFormat, inputType } from './formatting';
+
 export async function mariaDbQuery(
     query: string,
     queryonly: boolean = false
@@ -53,15 +55,15 @@ export async function searchDataToTable(
 export async function deleteEntityById(
     idName: string,
     tableName: string,
-    deleteThisId: number,
-    func: React.Dispatch<React.SetStateAction<number>>
+    deleteThisId: string,
+    func: React.Dispatch<React.SetStateAction<string>>
 ) {
-    if (deleteThisId != -1) {
+    if (parseInt(deleteThisId) >= -1) {
         await mariaDbQuery(
             `delete from ${tableName} where ${idName} = '${deleteThisId}';`,
             true
         );
-        func(-1);
+        func('');
     } else {
         console.log('No ID detected');
     }
@@ -83,7 +85,11 @@ export function sendEditQuery<T>(
         // Check for differences
         for (const key of keys) {
             if (entity[key] !== defaultEntity[key]) {
-                differenceEntity[key as string] = `'${entity[key]}'`;
+                differenceEntity[key as string] = `'${
+                    inputType(entity[key]) === 'date'
+                        ? convertDateFormat(entity[key])
+                        : entity[key]
+                }'`;
             }
         }
 
@@ -93,10 +99,11 @@ export function sendEditQuery<T>(
         }
 
         // Build the query string
-        const setClause = Object.entries(differenceEntity)
+        const clause = Object.entries(differenceEntity)
             .map(([key, value]) => `${key} = ${value}`)
             .join(', ');
-        const query = `update ${tableName} set ${setClause} where ${deleteIdName} = ${entity[deleteIdName]};`;
+
+        const query = `update ${tableName} set ${clause} where ${deleteIdName} = ${entity[deleteIdName]};`;
         await mariaDbQuery(query, true);
         await fetchDataToTable(
             selectAllQuery,
@@ -160,7 +167,6 @@ export async function sendNewEntity(
             setDefaultTable,
             true
         );
-
         setNewEntity(addNewPlaceholder);
     } else {
         console.log('Invalid entry.');

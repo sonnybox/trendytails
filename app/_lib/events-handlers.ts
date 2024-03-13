@@ -1,9 +1,9 @@
 export const handleIdChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    func: React.Dispatch<React.SetStateAction<number>>
+    func: React.Dispatch<React.SetStateAction<string>>
 ) => {
-    const id = parseInt(event.target.value, 10);
-    !isNaN(id) ? func(id) : func(-1);
+    const id = event.target.value;
+    !isNaN(parseInt(id)) ? func(id) : func('');
 };
 
 export const handleSearchChange = (
