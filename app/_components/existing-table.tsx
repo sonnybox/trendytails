@@ -44,6 +44,8 @@ function renderEditBody(
                         <input
                             className='modify-cell'
                             value={formatValue(entity[key])}
+                            spellCheck='false'
+                            autoComplete='off'
                             type='string'
                             onChange={(e) =>
                                 handleEditChange(

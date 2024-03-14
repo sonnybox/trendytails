@@ -55,7 +55,8 @@ main {
     max-width: 960px;
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
+    margin: 1rem auto;
+    padding: 0 1rem;
     @apply mt-2;
 }
 
@@ -135,10 +136,6 @@ tr:last-of-type td:last-child {
     border-bottom-right-radius: var(--radius);
 }
 
-input::-webkit-calendar-picker-indicator {
-    display: none;
-}
-
 input.modify-cell {
     @apply m-0 p-0;
     border: none;
@@ -146,6 +143,10 @@ input.modify-cell {
     width: 100%;
     box-sizing: border-box;
     background: none;
+}
+
+input.modify-cell[type='date'] {
+    background: rgba(0, 0, 0, 0.01);
 }
 
 input.modify-cell:focus {
@@ -160,9 +161,15 @@ button,
 select,
 .search-input {
     padding: var(--padding);
+    padding-left: calc(var(--padding) * 2);
+    padding-right: calc(var(--padding) * 2);
     border-radius: var(--radius);
     @apply transition-all;
     height: 2.6rem;
+}
+
+input::-webkit-calendar-picker-indicator {
+    display: none;
 }
 
 select {
@@ -174,7 +181,7 @@ select {
 
 input.search-input {
     background-color: var(--gruvbox-bg1);
-    color: var(--gruvbox-bg0);
+    color: var(--gruvbox-fg0);
     border: 1px solid var(--gruvbox-fg4);
     outline: none;
 }
@@ -186,6 +193,7 @@ input.search-input {
 
 .search-input:focus {
     background-color: var(--gruvbox-fg);
+    color: var(--gruvbox-bg0);
 }
 
 .add-button {
@@ -229,4 +237,27 @@ input.search-input {
 .left {
     background-color: #98971a;
     width: 100px;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --padding: 0.2rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    main {
+        font-size: small;
+        padding: 0 1rem;
+    }
+
+    div {
+        margin-bottom: 1rem;
+    }
 }

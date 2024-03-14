@@ -47,6 +47,8 @@ export default function NewTable({
                                 <td key={key}>
                                     <input
                                         type={getInputType(key)}
+                                        autoComplete='off'
+                                        spellCheck='false'
                                         name={key}
                                         className='modify-cell'
                                         value={entity[key]}

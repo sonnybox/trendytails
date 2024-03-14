@@ -30,6 +30,8 @@ export default function RemoveId({
             <input
                 type='number'
                 name='id'
+                autoComplete='off'
+                spellCheck='false'
                 className='search-input mr-2'
                 placeholder='type a id...'
                 onChange={(event) => handleIdChange(event, setDeleteThisId)}

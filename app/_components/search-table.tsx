@@ -22,8 +22,8 @@ export default function SearchTable({
     setSearchString,
 }: Table) {
     return (
-        <div className='mb-2'>
-            <div className='flex flex-row mb-1'>
+        <div className='mb-6'>
+            <div className='flex flex-row mb-3'>
                 <h2 className='mt-1 mr-2'>Live Search</h2>
                 <select
                     name='searchType'
@@ -49,6 +49,8 @@ export default function SearchTable({
                 </select>
                 <input
                     placeholder='type anything...'
+                    spellCheck='false'
+                    autoComplete='off'
                     className='search-input'
                     id='input'
                     onChange={(event) =>
