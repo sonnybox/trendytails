@@ -247,7 +247,7 @@ input.search-input {
 
 .text-box {
     border-radius: var(--radius);
-    padding: var(--padding);
+    padding: calc(2 * var(--padding));
     background-color: var(--gruvbox-bg1);
     color: var(--gruvbox-fg);
     border: 2px solid var(--gruvbox-fg4);
