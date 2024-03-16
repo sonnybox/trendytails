@@ -20,9 +20,10 @@ export async function POST(req: Request) {
         if (body.queryonly == false) {
             response = JSON.stringify(data);
         } else {
-            response = JSON.stringify({});
+            response = JSON.stringify([]);
         }
     } catch (error) {
+        response = JSON.stringify([]);
         console.log(`FYI an error was caught -> ${error}`);
     }
 
