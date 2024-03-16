@@ -23,8 +23,8 @@ export default function RemoveId({
     optionalHeader,
 }: Table) {
     return (
-        <div className='flex flex-row mb-2 mt-1'>
-            <h2 className='mt-1 mr-2'>
+        <div className='flex flex-row mb-2'>
+            <h2 className='mr-2'>
                 {optionalHeader ? optionalHeader : 'Remove By ID'}
             </h2>
             <input

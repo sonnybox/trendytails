@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* could be any from above, look at documentation for more information */
-@layer utilities {
-    .text-balance {
-        text-wrap: balance;
-    }
-}
-
 /* Global Font */
 * {
     font-family: var(--figtree), var(--icon), sans-serif;
@@ -228,12 +221,6 @@ input.search-input {
     background-color: var(--gruvbox-aqua-light);
 }
 
-.navigation {
-    display: flex;
-    justify-content: space-between;
-    background-color: var(--gruvbox-fg0);
-}
-
 .left {
     background-color: #98971a;
     width: 100px;
@@ -255,10 +242,6 @@ input.search-input {
     main {
         font-size: small;
         padding: 0 1rem;
-    }
-
-    div {
-        margin-bottom: 1rem;
     }
 }
 
